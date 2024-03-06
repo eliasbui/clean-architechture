@@ -47,6 +47,15 @@ public class EventAddingRepositoryDecorator<T> : IRepositoryWithEvents<T>
         return _decorated.DeleteRangeAsync(entities, cancellationToken);
     }
 
+    public async Task DeleteRangeAsync(ISpecification<T> specification,
+        CancellationToken cancellationToken = new CancellationToken())
+    {
+        var entities = await _decorated.ListAsync(specification, cancellationToken);
+        foreach (var entity in entities) entity.DomainEvents.Add(EntityDeletedEvent.WithEntity(entity));
+
+        await _decorated.DeleteRangeAsync(specification, cancellationToken);
+    }
+
     // The rest of the methods are simply forwarded.
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -95,6 +104,11 @@ public class EventAddingRepositoryDecorator<T> : IRepositoryWithEvents<T>
     public Task<bool> AnyAsync(CancellationToken cancellationToken = default)
     {
         return _decorated.AnyAsync(cancellationToken);
+    }
+
+    public IAsyncEnumerable<T> AsAsyncEnumerable(ISpecification<T> specification)
+    {
+        return _decorated.AsAsyncEnumerable(specification);
     }
 
     public Task<int> CountAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
