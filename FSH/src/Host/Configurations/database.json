@@ -1,0 +1,6 @@
+{
+  "DatabaseSettings": {
+    "ConnectionString": "server=localhost;uid=root;pwd=16102003Nd@;database=defaultRootDb;Allow User Variables=True",
+    "DBProvider": "mysql"
+  }
+}

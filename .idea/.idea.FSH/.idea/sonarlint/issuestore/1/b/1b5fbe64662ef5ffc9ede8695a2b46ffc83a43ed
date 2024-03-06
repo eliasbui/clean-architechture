@@ -1,0 +1,18 @@
+
+ˆcsharpsquid:S101	"gRename class 'FSHApiConventions' to match pascal case naming rules, consider using 'FshApiConventions'.(ñ÷¡ûıÿÿÿÿ
+–csharpsquid:S1186"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(¿ÅÄâ
+–csharpsquid:S1186"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ı¾¿
+›csharpsquid:S1186""yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ı¾ßÛÿÿÿÿÿ
+›csharpsquid:S1186-"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ı¾ßÛÿÿÿÿÿ
+–csharpsquid:S1186;"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(Ï©ìÂ
+–csharpsquid:S1186F"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(Ï©ìÂ
+–csharpsquid:S1186T"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ÄíÖÊ
+–csharpsquid:S1186_"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(×¡­É
+›csharpsquid:S1186j"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ª„Ÿúûÿÿÿÿ
+›csharpsquid:S1186u"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ª„Ÿúûÿÿÿÿ
+œcsharpsquid:S1186ƒ"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(ª„Ÿúûÿÿÿÿ
+—csharpsquid:S1186”"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(¥¯½«
+—csharpsquid:S1186¢"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(¥¯½«
+—csharpsquid:S1186³"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(üÏú©
+—csharpsquid:S1186¾"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(üÏú©
+œcsharpsquid:S1186Ì"yAdd a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.(µº³Äùÿÿÿÿ

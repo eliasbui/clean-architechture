@@ -1,0 +1,5 @@
+
+rcsharpsquid:S101"WRename class 'FSHAction' to match pascal case naming rules, consider using 'FshAction'.(±ğj
+|csharpsquid:S101"[Rename class 'FSHResource' to match pascal case naming rules, consider using 'FshResource'.(¾ù•âÿÿÿÿÿ
+|csharpsquid:S101"aRename class 'FSHPermissions' to match pascal case naming rules, consider using 'FshPermissions'.(µåƒ^
+csharpsquid:S101R"`Rename record 'FSHPermission' to match pascal case naming rules, consider using 'FshPermission'.(¬ªûËÿÿÿÿÿ
