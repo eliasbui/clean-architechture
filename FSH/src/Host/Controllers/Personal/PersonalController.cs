@@ -9,7 +9,10 @@ public class PersonalController : VersionNeutralApiController
 {
     private readonly IUserService _userService;
 
-    public PersonalController(IUserService userService) => _userService = userService;
+    public PersonalController(IUserService userService)
+    {
+        _userService = userService;
+    }
 
     [HttpGet("profile")]
     [OpenApiOperation("Get profile details of currently logged in user.", "")]
@@ -24,10 +27,7 @@ public class PersonalController : VersionNeutralApiController
     [OpenApiOperation("Update profile details of currently logged in user.", "")]
     public async Task<ActionResult> UpdateProfileAsync(UpdateUserRequest request)
     {
-        if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
+        if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId)) return Unauthorized();
 
         await _userService.UpdateAsync(request, userId);
         return Ok();
@@ -38,10 +38,7 @@ public class PersonalController : VersionNeutralApiController
     [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
     public async Task<ActionResult> ChangePasswordAsync(ChangePasswordRequest model)
     {
-        if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
+        if (User.GetUserId() is not { } userId || string.IsNullOrEmpty(userId)) return Unauthorized();
 
         await _userService.ChangePasswordAsync(model, userId);
         return Ok();

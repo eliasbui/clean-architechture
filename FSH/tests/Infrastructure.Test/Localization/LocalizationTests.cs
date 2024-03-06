@@ -14,7 +14,10 @@ public class LocalizationTests
 
     private readonly IStringLocalizer _localizer;
 
-    public LocalizationTests(IStringLocalizer<LocalizationTests> localizer) => _localizer = localizer;
+    public LocalizationTests(IStringLocalizer<LocalizationTests> localizer)
+    {
+        _localizer = localizer;
+    }
 
     // there's no "en-US" folder
     // "nl-BE/test.po" only contains testString

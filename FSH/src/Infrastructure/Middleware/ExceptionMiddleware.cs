@@ -50,30 +50,20 @@ internal class ExceptionMiddleware : IMiddleware
             };
 
             if (exception is not CustomException && exception.InnerException != null)
-            {
                 while (exception.InnerException != null)
-                {
                     exception = exception.InnerException;
-                }
-            }
 
             if (exception is FluentValidation.ValidationException fluentException)
             {
                 errorResult.Exception = "One or More Validations failed.";
-                foreach (var error in fluentException.Errors)
-                {
-                    errorResult.Messages.Add(error.ErrorMessage);
-                }
+                foreach (var error in fluentException.Errors) errorResult.Messages.Add(error.ErrorMessage);
             }
 
             switch (exception)
             {
                 case CustomException e:
                     errorResult.StatusCode = (int)e.StatusCode;
-                    if (e.ErrorMessages is not null)
-                    {
-                        errorResult.Messages = e.ErrorMessages;
-                    }
+                    if (e.ErrorMessages is not null) errorResult.Messages = e.ErrorMessages;
 
                     break;
 

@@ -61,7 +61,7 @@ internal static class Startup
                 e.MigrationsAssembly("Migrators.Oracle")),
             DbProviderKeys.SqLite => builder.UseSqlite(connectionString, e =>
                 e.MigrationsAssembly("Migrators.SqLite")),
-            _ => throw new InvalidOperationException($"DB Provider {dbProvider} is not supported."),
+            _ => throw new InvalidOperationException($"DB Provider {dbProvider} is not supported.")
         };
     }
 

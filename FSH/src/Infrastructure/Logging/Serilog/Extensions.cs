@@ -8,6 +8,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using Serilog.Sinks.Elasticsearch;
 
 namespace FSH.Infrastructure.Logging.Serilog;
 
@@ -50,26 +51,20 @@ public static class Extensions
     private static void ConfigureConsoleLogging(LoggerConfiguration serilogConfig, bool structuredConsoleLogging)
     {
         if (structuredConsoleLogging)
-        {
             serilogConfig.WriteTo.Async(wt => wt.Console(new CompactJsonFormatter()));
-        }
         else
-        {
             serilogConfig.WriteTo.Async(wt => wt.Console());
-        }
     }
 
     private static void ConfigureWriteToFile(LoggerConfiguration serilogConfig, bool writeToFile)
     {
         if (writeToFile)
-        {
             serilogConfig.WriteTo.File(
                 new CompactJsonFormatter(),
                 "Logs/logs.json",
-                restrictedToMinimumLevel: LogEventLevel.Information,
+                LogEventLevel.Information,
                 rollingInterval: RollingInterval.Day,
                 retainedFileCountLimit: 5);
-        }
     }
 
     private static void ConfigureElasticSearch(WebApplicationBuilder builder, LoggerConfiguration serilogConfig,
@@ -81,11 +76,11 @@ public static class Extensions
             string indexFormat =
                 $"{formattedAppName}-logs-{builder.Environment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}";
             serilogConfig.WriteTo.Async(writeTo =>
-                writeTo.Elasticsearch(new(new Uri(elasticSearchUrl))
+                writeTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticSearchUrl))
                 {
                     AutoRegisterTemplate = true,
                     IndexFormat = indexFormat,
-                    MinimumLogEventLevel = LogEventLevel.Information,
+                    MinimumLogEventLevel = LogEventLevel.Information
                 })).Enrich.WithProperty("Environment", builder.Environment.EnvironmentName!);
         }
     }

@@ -8,17 +8,24 @@ public class UpgradeSubscriptionRequest : IRequest<string>
 
 public class UpgradeSubscriptionRequestValidator : CustomValidator<UpgradeSubscriptionRequest>
 {
-    public UpgradeSubscriptionRequestValidator() =>
+    public UpgradeSubscriptionRequestValidator()
+    {
         RuleFor(t => t.TenantId)
             .NotEmpty();
+    }
 }
 
 public class UpgradeSubscriptionRequestHandler : IRequestHandler<UpgradeSubscriptionRequest, string>
 {
     private readonly ITenantService _tenantService;
 
-    public UpgradeSubscriptionRequestHandler(ITenantService tenantService) => _tenantService = tenantService;
+    public UpgradeSubscriptionRequestHandler(ITenantService tenantService)
+    {
+        _tenantService = tenantService;
+    }
 
-    public Task<string> Handle(UpgradeSubscriptionRequest request, CancellationToken cancellationToken) =>
-        _tenantService.UpdateSubscription(request.TenantId, request.ExtendedExpiryDate);
+    public Task<string> Handle(UpgradeSubscriptionRequest request, CancellationToken cancellationToken)
+    {
+        return _tenantService.UpdateSubscription(request.TenantId, request.ExtendedExpiryDate);
+    }
 }

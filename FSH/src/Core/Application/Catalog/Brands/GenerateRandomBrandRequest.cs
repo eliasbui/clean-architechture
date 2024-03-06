@@ -9,7 +9,10 @@ public class GenerateRandomBrandRequestHandler : IRequestHandler<GenerateRandomB
 {
     private readonly IJobService _jobService;
 
-    public GenerateRandomBrandRequestHandler(IJobService jobService) => _jobService = jobService;
+    public GenerateRandomBrandRequestHandler(IJobService jobService)
+    {
+        _jobService = jobService;
+    }
 
     public Task<string> Handle(GenerateRandomBrandRequest request, CancellationToken cancellationToken)
     {

@@ -28,8 +28,6 @@ public class FSHPoFileLocationProvider : ILocalizationFileLocationProvider
         // for example, src\Host\Localization\en-US\FSH.Exceptions.po
         foreach (var file in _fileProvider.GetDirectoryContents(
                      PathExtensions.Combine(_resourcesContainer, cultureName)))
-        {
             yield return file;
-        }
     }
 }

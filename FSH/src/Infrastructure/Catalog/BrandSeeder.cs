@@ -33,12 +33,8 @@ public class BrandSeeder : ICustomSeeder
             var brands = _serializerService.Deserialize<List<Brand>>(brandData);
 
             if (brands != null)
-            {
                 foreach (var brand in brands)
-                {
                     await _db.Brands.AddAsync(brand, cancellationToken);
-                }
-            }
 
             await _db.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("Seeded Brands.");

@@ -20,8 +20,10 @@ public class UpdateProductRequestHandler : IRequestHandler<UpdateProductRequest,
     private readonly IFileStorageService _file;
 
     public UpdateProductRequestHandler(IRepository<Product> repository,
-        IStringLocalizer<UpdateProductRequestHandler> localizer, IFileStorageService file) =>
+        IStringLocalizer<UpdateProductRequestHandler> localizer, IFileStorageService file)
+    {
         (_repository, _t, _file) = (repository, localizer, file);
+    }
 
     public async Task<Guid> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
     {

@@ -12,8 +12,10 @@ public class ConnectionStringSecurerTests
 
     private readonly IConnectionStringSecurer _connectionStringSecurer;
 
-    public ConnectionStringSecurerTests(IConnectionStringSecurer connectionStringSecurer) =>
+    public ConnectionStringSecurerTests(IConnectionStringSecurer connectionStringSecurer)
+    {
         _connectionStringSecurer = connectionStringSecurer;
+    }
 
     [Theory]
     [InlineData(Mssql + ";Integrated Security=True;", "mssql", false, "MSSQL: CASE 1 - Integrated Security")]
@@ -30,9 +32,6 @@ public class ConnectionStringSecurerTests
         Assert.DoesNotContain("12345", check1);
         Assert.DoesNotContain("root", check1);
 
-        if (containsCredentials)
-        {
-            Assert.Contains("*******", check1);
-        }
+        if (containsCredentials) Assert.Contains("*******", check1);
     }
 }

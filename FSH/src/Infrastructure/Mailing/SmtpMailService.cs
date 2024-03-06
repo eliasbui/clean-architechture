@@ -37,24 +37,18 @@ public class SmtpMailService : IMailService
 
             // Bcc
             if (request.Bcc != null)
-            {
                 foreach (string address in request.Bcc.Where(bccValue => !string.IsNullOrWhiteSpace(bccValue)))
                     email.Bcc.Add(MailboxAddress.Parse(address.Trim()));
-            }
 
             // Cc
             if (request.Cc != null)
-            {
                 foreach (string? address in request.Cc.Where(ccValue => !string.IsNullOrWhiteSpace(ccValue)))
                     email.Cc.Add(MailboxAddress.Parse(address.Trim()));
-            }
 
             // Headers
             if (request.Headers != null)
-            {
                 foreach (var header in request.Headers)
                     email.Headers.Add(header.Key, header.Value);
-            }
 
             // Content
             var builder = new BodyBuilder();
@@ -65,10 +59,8 @@ public class SmtpMailService : IMailService
 
             // Create the file attachments for this e-mail message
             if (request.AttachmentData != null)
-            {
                 foreach (var attachmentInfo in request.AttachmentData)
                     builder.Attachments.Add(attachmentInfo.Key, attachmentInfo.Value);
-            }
 
             email.Body = builder.ToMessageBody();
 

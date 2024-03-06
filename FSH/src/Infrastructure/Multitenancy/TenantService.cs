@@ -39,15 +39,21 @@ internal class TenantService : ITenantService
         return tenants;
     }
 
-    public async Task<bool> ExistsWithIdAsync(string id) =>
-        await _tenantStore.TryGetAsync(id) is not null;
+    public async Task<bool> ExistsWithIdAsync(string id)
+    {
+        return await _tenantStore.TryGetAsync(id) is not null;
+    }
 
-    public async Task<bool> ExistsWithNameAsync(string name) =>
-        (await _tenantStore.GetAllAsync()).Any(t => t.Name == name);
+    public async Task<bool> ExistsWithNameAsync(string name)
+    {
+        return (await _tenantStore.GetAllAsync()).Any(t => t.Name == name);
+    }
 
-    public async Task<TenantDto> GetByIdAsync(string id) =>
-        (await GetTenantInfoAsync(id))
-        .Adapt<TenantDto>();
+    public async Task<TenantDto> GetByIdAsync(string id)
+    {
+        return (await GetTenantInfoAsync(id))
+            .Adapt<TenantDto>();
+    }
 
     public async Task<string> CreateAsync(CreateTenantRequest request, CancellationToken cancellationToken)
     {
@@ -76,10 +82,7 @@ internal class TenantService : ITenantService
     {
         var tenant = await GetTenantInfoAsync(id);
 
-        if (tenant.IsActive)
-        {
-            throw new ConflictException(_t["Tenant is already Activated."]);
-        }
+        if (tenant.IsActive) throw new ConflictException(_t["Tenant is already Activated."]);
 
         tenant.Activate();
 
@@ -91,10 +94,7 @@ internal class TenantService : ITenantService
     public async Task<string> DeactivateAsync(string id)
     {
         var tenant = await GetTenantInfoAsync(id);
-        if (!tenant.IsActive)
-        {
-            throw new ConflictException(_t["Tenant is already Deactivated."]);
-        }
+        if (!tenant.IsActive) throw new ConflictException(_t["Tenant is already Deactivated."]);
 
         tenant.Deactivate();
         await _tenantStore.TryUpdateAsync(tenant);
@@ -109,7 +109,9 @@ internal class TenantService : ITenantService
         return _t["Tenant {0}'s Subscription Upgraded. Now Valid till {1}.", id, tenant.ValidUpto];
     }
 
-    private async Task<FSHTenantInfo> GetTenantInfoAsync(string id) =>
-        await _tenantStore.TryGetAsync(id)
-        ?? throw new NotFoundException(_t["{0} {1} Not Found.", typeof(FSHTenantInfo).Name, id]);
+    private async Task<FSHTenantInfo> GetTenantInfoAsync(string id)
+    {
+        return await _tenantStore.TryGetAsync(id)
+               ?? throw new NotFoundException(_t["{0} {1} Not Found.", typeof(FSHTenantInfo).Name, id]);
+    }
 }

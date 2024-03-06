@@ -4,13 +4,18 @@ public static class EntityCreatedEvent
 {
     public static EntityCreatedEvent<TEntity> WithEntity<TEntity>(TEntity entity)
         where TEntity : IEntity
-        => new(entity);
+    {
+        return new EntityCreatedEvent<TEntity>(entity);
+    }
 }
 
 public class EntityCreatedEvent<TEntity> : DomainEvent
     where TEntity : IEntity
 {
-    internal EntityCreatedEvent(TEntity entity) => Entity = entity;
+    internal EntityCreatedEvent(TEntity entity)
+    {
+        Entity = entity;
+    }
 
     public TEntity Entity { get; }
 }

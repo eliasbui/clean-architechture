@@ -19,7 +19,10 @@ public class HangfireCustomBasicAuthenticationFilter : IDashboardAuthorizationFi
     {
     }
 
-    public HangfireCustomBasicAuthenticationFilter(ILogger logger) => _logger = logger;
+    public HangfireCustomBasicAuthenticationFilter(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     public bool Authorize(DashboardContext context)
     {

@@ -42,22 +42,30 @@ internal class RoleService : IRoleService
         _events = events;
     }
 
-    public async Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken) =>
-        (await _roleManager.Roles.ToListAsync(cancellationToken))
-        .Adapt<List<RoleDto>>();
+    public async Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken)
+    {
+        return (await _roleManager.Roles.ToListAsync(cancellationToken))
+            .Adapt<List<RoleDto>>();
+    }
 
-    public async Task<int> GetCountAsync(CancellationToken cancellationToken) =>
-        await _roleManager.Roles.CountAsync(cancellationToken);
+    public async Task<int> GetCountAsync(CancellationToken cancellationToken)
+    {
+        return await _roleManager.Roles.CountAsync(cancellationToken);
+    }
 
-    public async Task<bool> ExistsAsync(string roleName, string? excludeId) =>
-        await _roleManager.FindByNameAsync(roleName)
-            is ApplicationRole existingRole
-        && existingRole.Id != excludeId;
+    public async Task<bool> ExistsAsync(string roleName, string? excludeId)
+    {
+        return await _roleManager.FindByNameAsync(roleName)
+                   is ApplicationRole existingRole
+               && existingRole.Id != excludeId;
+    }
 
-    public async Task<RoleDto> GetByIdAsync(string id) =>
-        await _db.Roles.SingleOrDefaultAsync(x => x.Id == id) is { } role
+    public async Task<RoleDto> GetByIdAsync(string id)
+    {
+        return await _db.Roles.SingleOrDefaultAsync(x => x.Id == id) is { } role
             ? role.Adapt<RoleDto>()
             : throw new NotFoundException(_t["Role Not Found"]);
+    }
 
     public async Task<RoleDto> GetByIdWithPermissionsAsync(string roleId, CancellationToken cancellationToken)
     {
@@ -79,10 +87,7 @@ internal class RoleService : IRoleService
             var role = new ApplicationRole(request.Name, request.Description);
             var result = await _roleManager.CreateAsync(role);
 
-            if (!result.Succeeded)
-            {
-                throw new InternalServerException(_t["Register role failed"], result.GetErrors(_t));
-            }
+            if (!result.Succeeded) throw new InternalServerException(_t["Register role failed"], result.GetErrors(_t));
 
             await _events.PublishAsync(new ApplicationRoleCreatedEvent(role.Id, role.Name!));
 
@@ -96,19 +101,14 @@ internal class RoleService : IRoleService
             _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
 
             if (FSHRoles.IsDefault(role.Name!))
-            {
                 throw new ConflictException(string.Format(_t["Not allowed to modify {0} Role."], role.Name));
-            }
 
             role.Name = request.Name;
             role.NormalizedName = request.Name.ToUpperInvariant();
             role.Description = request.Description;
             var result = await _roleManager.UpdateAsync(role);
 
-            if (!result.Succeeded)
-            {
-                throw new InternalServerException(_t["Update role failed"], result.GetErrors(_t));
-            }
+            if (!result.Succeeded) throw new InternalServerException(_t["Update role failed"], result.GetErrors(_t));
 
             await _events.PublishAsync(new ApplicationRoleUpdatedEvent(role.Id, role.Name));
 
@@ -122,15 +122,11 @@ internal class RoleService : IRoleService
         var role = await _roleManager.FindByIdAsync(request.RoleId);
         _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
         if (role.Name == FSHRoles.Admin)
-        {
             throw new ConflictException(_t["Not allowed to modify Permissions for this Role."]);
-        }
 
         if (_currentTenant.Id != MultitenancyConstants.Root.Id)
-        {
             // Remove Root Permissions if the Role is not created for Root Tenant.
             request.Permissions.RemoveAll(u => u.StartsWith("Permissions.Root."));
-        }
 
         var currentClaims = await _roleManager.GetClaimsAsync(role);
 
@@ -139,14 +135,11 @@ internal class RoleService : IRoleService
         {
             var removeResult = await _roleManager.RemoveClaimAsync(role, claim);
             if (!removeResult.Succeeded)
-            {
                 throw new InternalServerException(_t["Update permissions failed."], removeResult.GetErrors(_t));
-            }
         }
 
         // Add all permissions that were not previously selected
         foreach (string permission in request.Permissions.Where(c => !currentClaims.Any(p => p.Value == c)))
-        {
             if (!string.IsNullOrEmpty(permission))
             {
                 _db.RoleClaims.Add(new ApplicationRoleClaim
@@ -158,7 +151,6 @@ internal class RoleService : IRoleService
                 });
                 await _db.SaveChangesAsync(cancellationToken);
             }
-        }
 
         await _events.PublishAsync(new ApplicationRoleUpdatedEvent(role.Id, role.Name!, true));
 
@@ -172,15 +164,11 @@ internal class RoleService : IRoleService
         _ = role ?? throw new NotFoundException(_t["Role Not Found"]);
 
         if (FSHRoles.IsDefault(role.Name!))
-        {
             throw new ConflictException(string.Format(_t["Not allowed to delete {0} Role."], role.Name));
-        }
 
         if ((await _userManager.GetUsersInRoleAsync(role.Name!)).Count > 0)
-        {
             throw new ConflictException(string.Format(_t["Not allowed to delete {0} Role as it is being used."],
                 role.Name));
-        }
 
         await _roleManager.DeleteAsync(role);
 

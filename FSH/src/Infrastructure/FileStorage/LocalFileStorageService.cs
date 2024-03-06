@@ -12,10 +12,7 @@ public class LocalFileStorageService : IFileStorageService
         CancellationToken cancellationToken = default)
         where T : class
     {
-        if (request == null || request.Data == null)
-        {
-            return string.Empty;
-        }
+        if (request == null || request.Data == null) return string.Empty;
 
         if (request.Extension is null || !supportedFileType.GetDescriptionList().Contains(request.Extension.ToLower()))
             throw new InvalidOperationException("File Format Not Supported.");
@@ -28,15 +25,12 @@ public class LocalFileStorageService : IFileStorageService
         if (streamData.Length > 0)
         {
             string folder = typeof(T).Name;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                folder = folder.Replace(@"\", "/");
-            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) folder = folder.Replace(@"\", "/");
 
             string folderName = supportedFileType switch
             {
                 FileType.Image => Path.Combine("Files", "Images", folder),
-                _ => Path.Combine("Files", "Others", folder),
+                _ => Path.Combine("Files", "Others", folder)
             };
             string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             Directory.CreateDirectory(pathToSave);
@@ -70,26 +64,18 @@ public class LocalFileStorageService : IFileStorageService
 
     public void Remove(string? path)
     {
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
+        if (File.Exists(path)) File.Delete(path);
     }
 
     private const string NumberPattern = "-{0}";
 
     private static string NextAvailableFilename(string path)
     {
-        if (!File.Exists(path))
-        {
-            return path;
-        }
+        if (!File.Exists(path)) return path;
 
         if (Path.HasExtension(path))
-        {
             return GetNextFilename(path.Insert(path.LastIndexOf(Path.GetExtension(path), StringComparison.Ordinal),
                 NumberPattern));
-        }
 
         return GetNextFilename(path + NumberPattern);
     }
@@ -98,10 +84,7 @@ public class LocalFileStorageService : IFileStorageService
     {
         string tmp = string.Format(pattern, 1);
 
-        if (!File.Exists(tmp))
-        {
-            return tmp;
-        }
+        if (!File.Exists(tmp)) return tmp;
 
         int min = 1, max = 2;
 
@@ -115,13 +98,9 @@ public class LocalFileStorageService : IFileStorageService
         {
             int pivot = (max + min) / 2;
             if (File.Exists(string.Format(pattern, pivot)))
-            {
                 min = pivot;
-            }
             else
-            {
                 max = pivot;
-            }
         }
 
         return string.Format(pattern, max);

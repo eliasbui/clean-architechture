@@ -6,7 +6,10 @@ public sealed class TokensController : VersionNeutralApiController
 {
     private readonly ITokenService _tokenService;
 
-    public TokensController(ITokenService tokenService) => _tokenService = tokenService;
+    public TokensController(ITokenService tokenService)
+    {
+        _tokenService = tokenService;
+    }
 
     [HttpPost]
     [AllowAnonymous]
@@ -27,8 +30,10 @@ public sealed class TokensController : VersionNeutralApiController
         return _tokenService.RefreshTokenAsync(request, GetIpAddress()!);
     }
 
-    private string? GetIpAddress() =>
-        Request.Headers.ContainsKey("X-Forwarded-For")
+    private string? GetIpAddress()
+    {
+        return Request.Headers.ContainsKey("X-Forwarded-For")
             ? Request.Headers["X-Forwarded-For"]
             : HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "N/A";
+    }
 }

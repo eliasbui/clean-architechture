@@ -44,33 +44,22 @@ internal class TokenService : ITokenService
         if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
             || await _userManager.FindByEmailAsync(request.Email.Trim().Normalize()) is not { } user
             || !await _userManager.CheckPasswordAsync(user, request.Password))
-        {
             throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
 
-        if (!user.IsActive)
-        {
-            throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
-        }
+        if (!user.IsActive) throw new UnauthorizedException(_t["User Not Active. Please contact the administrator."]);
 
         if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
-        {
             throw new UnauthorizedException(_t["E-Mail not confirmed."]);
-        }
 
         if (_currentTenant.Id != MultitenancyConstants.Root.Id)
         {
             if (!_currentTenant.IsActive)
-            {
                 throw new UnauthorizedException(
                     _t["Tenant is not Active. Please contact the Application Administrator."]);
-            }
 
             if (DateTime.UtcNow > _currentTenant.ValidUpto)
-            {
                 throw new UnauthorizedException(
                     _t["Tenant Validity Has Expired. Please contact the Application Administrator."]);
-            }
         }
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
@@ -81,15 +70,10 @@ internal class TokenService : ITokenService
         var userPrincipal = GetPrincipalFromExpiredToken(request.Token);
         string? userEmail = userPrincipal.GetEmail();
         var user = await _userManager.FindByEmailAsync(userEmail!);
-        if (user is null)
-        {
-            throw new UnauthorizedException(_t["Authentication Failed."]);
-        }
+        if (user is null) throw new UnauthorizedException(_t["Authentication Failed."]);
 
         if (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-        {
             throw new UnauthorizedException(_t["Invalid Refresh Token."]);
-        }
 
         return await GenerateTokensAndUpdateUser(user, ipAddress);
     }
@@ -106,11 +90,14 @@ internal class TokenService : ITokenService
         return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
     }
 
-    private string GenerateJwt(ApplicationUser user, string ipAddress) =>
-        GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, ipAddress));
+    private string GenerateJwt(ApplicationUser user, string ipAddress)
+    {
+        return GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, ipAddress));
+    }
 
-    private IEnumerable<Claim> GetClaims(ApplicationUser user, string ipAddress) =>
-        new List<Claim>
+    private IEnumerable<Claim> GetClaims(ApplicationUser user, string ipAddress)
+    {
+        return new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Email, user.Email!),
@@ -122,6 +109,7 @@ internal class TokenService : ITokenService
             new(FSHClaims.ImageUrl, user.ImageUrl ?? string.Empty),
             new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
         };
+    }
 
     private static string GenerateRefreshToken()
     {
@@ -159,9 +147,7 @@ internal class TokenService : ITokenService
             !jwtSecurityToken.Header.Alg.Equals(
                 SecurityAlgorithms.HmacSha256,
                 StringComparison.InvariantCultureIgnoreCase))
-        {
             throw new UnauthorizedException(_t["Invalid Token."]);
-        }
 
         return principal;
     }

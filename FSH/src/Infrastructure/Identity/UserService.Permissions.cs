@@ -18,12 +18,10 @@ internal partial class UserService
         foreach (var role in await _roleManager.Roles
                      .Where(r => userRoles.Contains(r.Name!))
                      .ToListAsync(cancellationToken))
-        {
             permissions.AddRange(await _db.RoleClaims
                 .Where(rc => rc.RoleId == role.Id && rc.ClaimType == FSHClaims.Permission)
                 .Select(rc => rc.ClaimValue!)
                 .ToListAsync(cancellationToken));
-        }
 
         return permissions.Distinct().ToList();
     }
@@ -38,6 +36,8 @@ internal partial class UserService
         return permissions?.Contains(permission) ?? false;
     }
 
-    public Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken) =>
-        _cache.RemoveAsync(_cacheKeys.GetCacheKey(FSHClaims.Permission, userId), cancellationToken);
+    public Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken)
+    {
+        return _cache.RemoveAsync(_cacheKeys.GetCacheKey(FSHClaims.Permission, userId), cancellationToken);
+    }
 }

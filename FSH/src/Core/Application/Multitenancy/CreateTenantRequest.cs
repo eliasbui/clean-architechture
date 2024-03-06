@@ -13,8 +13,13 @@ public class CreateTenantRequestHandler : IRequestHandler<CreateTenantRequest, s
 {
     private readonly ITenantService _tenantService;
 
-    public CreateTenantRequestHandler(ITenantService tenantService) => _tenantService = tenantService;
+    public CreateTenantRequestHandler(ITenantService tenantService)
+    {
+        _tenantService = tenantService;
+    }
 
-    public Task<string> Handle(CreateTenantRequest request, CancellationToken cancellationToken) =>
-        _tenantService.CreateAsync(request, cancellationToken);
+    public Task<string> Handle(CreateTenantRequest request, CancellationToken cancellationToken)
+    {
+        return _tenantService.CreateAsync(request, cancellationToken);
+    }
 }

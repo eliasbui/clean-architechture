@@ -16,8 +16,10 @@ public class CreateProductRequestHandler : IRequestHandler<CreateProductRequest,
     private readonly IRepository<Product> _repository;
     private readonly IFileStorageService _file;
 
-    public CreateProductRequestHandler(IRepository<Product> repository, IFileStorageService file) =>
+    public CreateProductRequestHandler(IRepository<Product> repository, IFileStorageService file)
+    {
         (_repository, _file) = (repository, file);
+    }
 
     public async Task<Guid> Handle(CreateProductRequest request, CancellationToken cancellationToken)
     {

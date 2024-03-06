@@ -9,17 +9,25 @@ public class LocalCacheService : ICacheService
     private readonly ILogger<LocalCacheService> _logger;
     private readonly IMemoryCache _cache;
 
-    public LocalCacheService(IMemoryCache cache, ILogger<LocalCacheService> logger) =>
+    public LocalCacheService(IMemoryCache cache, ILogger<LocalCacheService> logger)
+    {
         (_cache, _logger) = (cache, logger);
+    }
 
-    public T? Get<T>(string key) =>
-        _cache.Get<T>(key);
+    public T? Get<T>(string key)
+    {
+        return _cache.Get<T>(key);
+    }
 
-    public Task<T?> GetAsync<T>(string key, CancellationToken token = default) =>
-        Task.FromResult(Get<T>(key));
+    public Task<T?> GetAsync<T>(string key, CancellationToken token = default)
+    {
+        return Task.FromResult(Get<T>(key));
+    }
 
-    public void Refresh(string key) =>
+    public void Refresh(string key)
+    {
         _cache.TryGetValue(key, out _);
+    }
 
     public Task RefreshAsync(string key, CancellationToken token = default)
     {
@@ -27,8 +35,10 @@ public class LocalCacheService : ICacheService
         return Task.CompletedTask;
     }
 
-    public void Remove(string key) =>
+    public void Remove(string key)
+    {
         _cache.Remove(key);
+    }
 
     public Task RemoveAsync(string key, CancellationToken token = default)
     {

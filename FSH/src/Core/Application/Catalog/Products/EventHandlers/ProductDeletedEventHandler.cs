@@ -6,7 +6,10 @@ public class ProductDeletedEventHandler : EventNotificationHandler<EntityDeleted
 {
     private readonly ILogger<ProductDeletedEventHandler> _logger;
 
-    public ProductDeletedEventHandler(ILogger<ProductDeletedEventHandler> logger) => _logger = logger;
+    public ProductDeletedEventHandler(ILogger<ProductDeletedEventHandler> logger)
+    {
+        _logger = logger;
+    }
 
     public override Task Handle(EntityDeletedEvent<Product> @event, CancellationToken cancellationToken)
     {

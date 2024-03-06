@@ -6,7 +6,10 @@ public class RolesController : VersionNeutralApiController
 {
     private readonly IRoleService _roleService;
 
-    public RolesController(IRoleService roleService) => _roleService = roleService;
+    public RolesController(IRoleService roleService)
+    {
+        _roleService = roleService;
+    }
 
     [HttpGet]
     [MustHavePermission(FSHAction.View, FSHResource.Roles)]
@@ -38,10 +41,7 @@ public class RolesController : VersionNeutralApiController
     public async Task<ActionResult<string>> UpdatePermissionsAsync(string id, UpdateRolePermissionsRequest request,
         CancellationToken cancellationToken)
     {
-        if (id != request.RoleId)
-        {
-            return BadRequest();
-        }
+        if (id != request.RoleId) return BadRequest();
 
         return Ok(await _roleService.UpdatePermissionsAsync(request, cancellationToken));
     }

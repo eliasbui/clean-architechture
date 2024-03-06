@@ -26,9 +26,7 @@ internal class DatabaseInitializer : IDatabaseInitializer
         await InitializeTenantDbAsync(cancellationToken);
 
         foreach (var tenant in await _tenantDbContext.TenantInfo.ToListAsync(cancellationToken))
-        {
             await InitializeApplicationDbForTenantAsync(tenant, cancellationToken);
-        }
 
         _logger.LogInformation("For documentations and guides, visit https://www.fullstackhero.net");
         _logger.LogInformation("To Sponsor this project, visit https://opencollective.com/fullstackhero");
@@ -65,7 +63,7 @@ internal class DatabaseInitializer : IDatabaseInitializer
     private async Task SeedRootTenantAsync(CancellationToken cancellationToken)
     {
         if (await _tenantDbContext.TenantInfo.FindAsync(new object?[] { MultitenancyConstants.Root.Id },
-                cancellationToken: cancellationToken) is null)
+                cancellationToken) is null)
         {
             var rootTenant = new FSHTenantInfo(
                 MultitenancyConstants.Root.Id,

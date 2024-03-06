@@ -26,17 +26,23 @@ internal static class Startup
             : services.AddJwtAuth();
     }
 
-    internal static IApplicationBuilder UseCurrentUser(this IApplicationBuilder app) =>
-        app.UseMiddleware<CurrentUserMiddleware>();
+    internal static IApplicationBuilder UseCurrentUser(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<CurrentUserMiddleware>();
+    }
 
-    private static IServiceCollection AddCurrentUser(this IServiceCollection services) =>
-        services
+    private static IServiceCollection AddCurrentUser(this IServiceCollection services)
+    {
+        return services
             .AddScoped<CurrentUserMiddleware>()
             .AddScoped<ICurrentUser, CurrentUser>()
             .AddScoped(sp => (ICurrentUserInitializer)sp.GetRequiredService<ICurrentUser>());
+    }
 
-    private static IServiceCollection AddPermissions(this IServiceCollection services) =>
-        services
+    private static IServiceCollection AddPermissions(this IServiceCollection services)
+    {
+        return services
             .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
             .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+    }
 }

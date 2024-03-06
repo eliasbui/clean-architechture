@@ -18,7 +18,6 @@ internal partial class UserService
         var roles = await _roleManager.Roles.AsNoTracking().ToListAsync(cancellationToken);
         if (roles is null) throw new NotFoundException("Roles Not Found.");
         foreach (var role in roles)
-        {
             userRoles.Add(new UserRoleDto
             {
                 RoleId = role.Id,
@@ -26,7 +25,6 @@ internal partial class UserService
                 Description = role.Description,
                 Enabled = await _userManager.IsInRoleAsync(user, role.Name!)
             });
-        }
 
         return userRoles;
     }
@@ -52,9 +50,7 @@ internal partial class UserService
             if (user.Email == MultitenancyConstants.Root.EmailAddress)
             {
                 if (_currentTenant.Id == MultitenancyConstants.Root.Id)
-                {
                     throw new ConflictException(_t["Cannot Remove Admin Role From Root Tenant Admin."]);
-                }
             }
             else if (adminCount <= 2)
             {
@@ -63,23 +59,19 @@ internal partial class UserService
         }
 
         foreach (var userRole in request.UserRoles)
-        {
             // Check if Role Exists
             if (await _roleManager.FindByNameAsync(userRole.RoleName!) is not null)
             {
                 if (userRole.Enabled)
                 {
                     if (!await _userManager.IsInRoleAsync(user, userRole.RoleName!))
-                    {
                         await _userManager.AddToRoleAsync(user, userRole.RoleName!);
-                    }
                 }
                 else
                 {
                     await _userManager.RemoveFromRoleAsync(user, userRole.RoleName!);
                 }
             }
-        }
 
         await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id, true));
 

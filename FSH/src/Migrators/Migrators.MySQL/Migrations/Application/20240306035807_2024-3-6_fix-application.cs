@@ -3,68 +3,67 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Migrators.MySQL.Migrations.Application
+namespace Migrators.MySQL.Migrations.Application;
+
+/// <inheritdoc />
+public partial class _202436_fixapplication : Migration
 {
     /// <inheritdoc />
-    public partial class _202436_fixapplication : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Description",
-                schema: "Identity",
-                table: "RoleClaims");
+        migrationBuilder.DropColumn(
+            "Description",
+            schema: "Identity",
+            table: "RoleClaims");
 
-            migrationBuilder.DropColumn(
-                name: "Group",
-                schema: "Identity",
-                table: "RoleClaims");
+        migrationBuilder.DropColumn(
+            "Group",
+            schema: "Identity",
+            table: "RoleClaims");
 
-            migrationBuilder.DropColumn(
-                name: "LastModifiedBy",
-                schema: "Identity",
-                table: "RoleClaims");
+        migrationBuilder.DropColumn(
+            "LastModifiedBy",
+            schema: "Identity",
+            table: "RoleClaims");
 
-            migrationBuilder.DropColumn(
-                name: "LastModifiedOn",
-                schema: "Identity",
-                table: "RoleClaims");
-        }
+        migrationBuilder.DropColumn(
+            "LastModifiedOn",
+            schema: "Identity",
+            table: "RoleClaims");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "Description",
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn<string>(
+                "Description",
                 schema: "Identity",
                 table: "RoleClaims",
                 type: "longtext",
                 nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Group",
+        migrationBuilder.AddColumn<string>(
+                "Group",
                 schema: "Identity",
                 table: "RoleClaims",
                 type: "longtext",
                 nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "LastModifiedBy",
+        migrationBuilder.AddColumn<string>(
+                "LastModifiedBy",
                 schema: "Identity",
                 table: "RoleClaims",
                 type: "longtext",
                 nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
+            .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModifiedOn",
-                schema: "Identity",
-                table: "RoleClaims",
-                type: "datetime(6)",
-                nullable: true);
-        }
+        migrationBuilder.AddColumn<DateTime>(
+            "LastModifiedOn",
+            schema: "Identity",
+            table: "RoleClaims",
+            type: "datetime(6)",
+            nullable: true);
     }
 }

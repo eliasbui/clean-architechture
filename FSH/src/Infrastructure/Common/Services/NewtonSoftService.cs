@@ -27,6 +27,6 @@ public class NewtonSoftService : ISerializerService
 
     public string Serialize<T>(T obj, Type type)
     {
-        return JsonConvert.SerializeObject(obj, type, new());
+        return JsonConvert.SerializeObject(obj, type, new JsonSerializerSettings());
     }
 }

@@ -60,12 +60,10 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
         // optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
 
         if (!string.IsNullOrWhiteSpace(TenantInfo?.ConnectionString))
-        {
             optionsBuilder.UseDatabase(_dbSettings.DBProvider, TenantInfo.ConnectionString);
-        }
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var auditEntries = HandleAuditingBeforeSaveChanges(_currentUser.GetUserId());
 
@@ -81,7 +79,6 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
     private List<AuditTrail> HandleAuditingBeforeSaveChanges(Guid userId)
     {
         foreach (var entry in ChangeTracker.Entries<IAuditableEntity>().ToList())
-        {
             switch (entry.State)
             {
                 case EntityState.Added:
@@ -104,7 +101,6 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
 
                     break;
             }
-        }
 
         ChangeTracker.DetectChanges();
 
@@ -169,9 +165,7 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
         }
 
         foreach (var auditEntry in trailEntries.Where(e => !e.HasTemporaryProperties))
-        {
             AuditTrails.Add(auditEntry.ToAuditTrail());
-        }
 
         return trailEntries.Where(e => e.HasTemporaryProperties).ToList();
     }
@@ -179,24 +173,15 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
     private Task HandleAuditingAfterSaveChangesAsync(List<AuditTrail> trailEntries,
         CancellationToken cancellationToken = new())
     {
-        if (trailEntries == null || trailEntries.Count == 0)
-        {
-            return Task.CompletedTask;
-        }
+        if (trailEntries == null || trailEntries.Count == 0) return Task.CompletedTask;
 
         foreach (var entry in trailEntries)
         {
             foreach (var prop in entry.TemporaryProperties)
-            {
                 if (prop.Metadata.IsPrimaryKey())
-                {
                     entry.KeyValues[prop.Metadata.Name] = prop.CurrentValue;
-                }
                 else
-                {
                     entry.NewValues[prop.Metadata.Name] = prop.CurrentValue;
-                }
-            }
 
             AuditTrails.Add(entry.ToAuditTrail());
         }
@@ -215,10 +200,7 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
         {
             var domainEvents = entity.DomainEvents.ToArray();
             entity.DomainEvents.Clear();
-            foreach (var domainEvent in domainEvents)
-            {
-                await _events.PublishAsync(domainEvent);
-            }
+            foreach (var domainEvent in domainEvents) await _events.PublishAsync(domainEvent);
         }
     }
 }

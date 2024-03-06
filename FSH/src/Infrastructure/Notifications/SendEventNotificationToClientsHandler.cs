@@ -13,8 +13,10 @@ public class SendEventNotificationToClientsHandler<TNotification> : INotificatio
 {
     private readonly INotificationSender _notifications;
 
-    public SendEventNotificationToClientsHandler(INotificationSender notifications) =>
+    public SendEventNotificationToClientsHandler(INotificationSender notifications)
+    {
         _notifications = notifications;
+    }
 
     public Task Handle(TNotification notification, CancellationToken cancellationToken)
     {

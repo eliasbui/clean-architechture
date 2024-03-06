@@ -107,20 +107,21 @@ internal partial class UserService : IUserService
 
     private void EnsureValidTenant()
     {
-        if (string.IsNullOrWhiteSpace(_currentTenant?.Id))
-        {
-            throw new UnauthorizedException(_t["Invalid Tenant."]);
-        }
+        if (string.IsNullOrWhiteSpace(_currentTenant?.Id)) throw new UnauthorizedException(_t["Invalid Tenant."]);
     }
 
-    public async Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken) =>
-        (await _userManager.Users
-            .AsNoTracking()
-            .ToListAsync(cancellationToken))
-        .Adapt<List<UserDetailsDto>>();
+    public async Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken)
+    {
+        return (await _userManager.Users
+                .AsNoTracking()
+                .ToListAsync(cancellationToken))
+            .Adapt<List<UserDetailsDto>>();
+    }
 
-    public Task<int> GetCountAsync(CancellationToken cancellationToken) =>
-        _userManager.Users.AsNoTracking().CountAsync(cancellationToken);
+    public Task<int> GetCountAsync(CancellationToken cancellationToken)
+    {
+        return _userManager.Users.AsNoTracking().CountAsync(cancellationToken);
+    }
 
     public async Task<UserDetailsDto> GetAsync(string userId, CancellationToken cancellationToken)
     {
@@ -141,10 +142,7 @@ internal partial class UserService : IUserService
         _ = user ?? throw new NotFoundException(_t["User Not Found."]);
 
         bool isAdmin = await _userManager.IsInRoleAsync(user, FSHRoles.Admin);
-        if (isAdmin)
-        {
-            throw new ConflictException(_t["Administrators Profile's Status cannot be toggled"]);
-        }
+        if (isAdmin) throw new ConflictException(_t["Administrators Profile's Status cannot be toggled"]);
 
         user.IsActive = request.ActivateUser;
 

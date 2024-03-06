@@ -13,7 +13,6 @@ internal static class Startup
         if (settings.UseDistributedCache)
         {
             if (settings.PreferRedis)
-            {
                 services.AddStackExchangeRedisCache(options =>
                 {
                     options.Configuration = settings.RedisURL;
@@ -23,11 +22,8 @@ internal static class Startup
                         EndPoints = { settings.RedisURL }
                     };
                 });
-            }
             else
-            {
                 services.AddDistributedMemoryCache();
-            }
 
             services.AddTransient<ICacheService, DistributedCacheService>();
         }

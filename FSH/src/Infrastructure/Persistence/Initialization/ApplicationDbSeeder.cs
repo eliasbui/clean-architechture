@@ -57,9 +57,7 @@ internal class ApplicationDbSeeder
                 await AssignPermissionsToRoleAsync(dbContext, FSHPermissions.Admin, role);
 
                 if (_currentTenant.Id == MultitenancyConstants.Root.Id)
-                {
                     await AssignPermissionsToRoleAsync(dbContext, FSHPermissions.Root, role);
-                }
             }
         }
     }
@@ -69,7 +67,6 @@ internal class ApplicationDbSeeder
     {
         var currentClaims = await _roleManager.GetClaimsAsync(role);
         foreach (var permission in permissions)
-        {
             if (!currentClaims.Any(c => c.Type == FSHClaims.Permission && c.Value == permission.Name))
             {
                 _logger.LogInformation("Seeding {role} Permission '{permission}' for '{tenantId}' Tenant.", role.Name,
@@ -83,15 +80,12 @@ internal class ApplicationDbSeeder
                 });
                 await dbContext.SaveChangesAsync();
             }
-        }
     }
 
     private async Task SeedAdminUserAsync()
     {
-        if (string.IsNullOrWhiteSpace(_currentTenant.Id) || string.IsNullOrWhiteSpace(_currentTenant.AdminEmail))
-        {
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(_currentTenant.Id) ||
+            string.IsNullOrWhiteSpace(_currentTenant.AdminEmail)) return;
 
         if (await _userManager.Users.FirstOrDefaultAsync(u => u.Email == _currentTenant.AdminEmail)
             is not ApplicationUser adminUser)

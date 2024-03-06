@@ -26,10 +26,7 @@ public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions
 
     public void Configure(string? name, JwtBearerOptions options)
     {
-        if (name != JwtBearerDefaults.AuthenticationScheme)
-        {
-            return;
-        }
+        if (name != JwtBearerDefaults.AuthenticationScheme) return;
 
         byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
 
@@ -51,9 +48,7 @@ public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions
             {
                 context.HandleResponse();
                 if (!context.Response.HasStarted)
-                {
                     _logger.LogWarning("Unauthorized request: {path}", context.Request.Path);
-                }
 
                 return Task.CompletedTask;
             },
@@ -64,10 +59,8 @@ public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions
 
                 if (!string.IsNullOrEmpty(accessToken) &&
                     context.HttpContext.Request.Path.StartsWithSegments("/notifications"))
-                {
                     // Read the token out of the query string
                     context.Token = accessToken;
-                }
 
                 return Task.CompletedTask;
             }

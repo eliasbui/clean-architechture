@@ -15,7 +15,10 @@ public class FSHJobFilter : IClientFilter
 
     private readonly IServiceProvider _services;
 
-    public FSHJobFilter(IServiceProvider services) => _services = services;
+    public FSHJobFilter(IServiceProvider services)
+    {
+        _services = services;
+    }
 
     public void OnCreating(CreatingContext context)
     {
@@ -36,8 +39,10 @@ public class FSHJobFilter : IClientFilter
         context.SetJobParameter(QueryStringKeys.UserId, userId);
     }
 
-    public void OnCreated(CreatedContext context) =>
+    public void OnCreated(CreatedContext context)
+    {
         Logger.InfoFormat(
             "Job created with parameters {0}",
             context.Parameters.Select(x => x.Key + "=" + x.Value).Aggregate((s1, s2) => s1 + ";" + s2));
+    }
 }

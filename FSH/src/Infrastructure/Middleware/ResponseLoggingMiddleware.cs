@@ -9,7 +9,10 @@ public class ResponseLoggingMiddleware : IMiddleware
 {
     private readonly ICurrentUser _currentUser;
 
-    public ResponseLoggingMiddleware(ICurrentUser currentUser) => _currentUser = currentUser;
+    public ResponseLoggingMiddleware(ICurrentUser currentUser)
+    {
+        _currentUser = currentUser;
+    }
 
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
@@ -44,7 +47,7 @@ public class ResponseLoggingMiddleware : IMiddleware
         LogContext.PushProperty("ResponseTimeUTC", DateTime.UtcNow);
         Log.ForContext("ResponseHeaders",
                 httpContext.Response.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()),
-                destructureObjects: true)
+                true)
             .ForContext("ResponseBody", responseBody)
             .Information(
                 "HTTP {RequestMethod} Request to {RequestPath} by {RequesterEmail} has Status Code {StatusCode}.",

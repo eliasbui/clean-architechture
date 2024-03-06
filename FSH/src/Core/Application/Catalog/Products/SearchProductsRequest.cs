@@ -11,13 +11,16 @@ public class SearchProductsRequestHandler : IRequestHandler<SearchProductsReques
 {
     private readonly IReadRepository<Product> _repository;
 
-    public SearchProductsRequestHandler(IReadRepository<Product> repository) => _repository = repository;
+    public SearchProductsRequestHandler(IReadRepository<Product> repository)
+    {
+        _repository = repository;
+    }
 
     public async Task<PaginationResponse<ProductDto>> Handle(SearchProductsRequest request,
         CancellationToken cancellationToken)
     {
         var spec = new ProductsBySearchRequestWithBrandsSpec(request);
         return await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize,
-            cancellationToken: cancellationToken);
+            cancellationToken);
     }
 }

@@ -8,8 +8,13 @@ public class GetAllTenantsRequestHandler : IRequestHandler<GetAllTenantsRequest,
 {
     private readonly ITenantService _tenantService;
 
-    public GetAllTenantsRequestHandler(ITenantService tenantService) => _tenantService = tenantService;
+    public GetAllTenantsRequestHandler(ITenantService tenantService)
+    {
+        _tenantService = tenantService;
+    }
 
-    public Task<List<TenantDto>> Handle(GetAllTenantsRequest request, CancellationToken cancellationToken) =>
-        _tenantService.GetAllAsync();
+    public Task<List<TenantDto>> Handle(GetAllTenantsRequest request, CancellationToken cancellationToken)
+    {
+        return _tenantService.GetAllAsync();
+    }
 }

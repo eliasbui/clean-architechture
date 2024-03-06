@@ -55,16 +55,20 @@ public static class Startup
             .AddServices();
     }
 
-    private static IServiceCollection AddApiVersioning(this IServiceCollection services) =>
-        services.AddApiVersioning(config =>
+    private static IServiceCollection AddApiVersioning(this IServiceCollection services)
+    {
+        return services.AddApiVersioning(config =>
         {
             config.DefaultApiVersion = new ApiVersion(1, 0);
             config.AssumeDefaultVersionWhenUnspecified = true;
             config.ReportApiVersions = true;
         });
+    }
 
-    private static IServiceCollection AddHealthCheck(this IServiceCollection services) =>
-        services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;
+    private static IServiceCollection AddHealthCheck(this IServiceCollection services)
+    {
+        return services.AddHealthChecks().AddCheck<TenantHealthCheck>("Tenant").Services;
+    }
 
     public static async Task InitializeDatabasesAsync(this IServiceProvider services,
         CancellationToken cancellationToken = default)
@@ -76,8 +80,9 @@ public static class Startup
             .InitializeDatabasesAsync(cancellationToken);
     }
 
-    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config) =>
-        builder
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder builder, IConfiguration config)
+    {
+        return builder
             .UseRequestLocalization()
             .UseStaticFiles()
             .UseSecurityHeaders(config)
@@ -92,6 +97,7 @@ public static class Startup
             .UseRequestLogging(config)
             .UseHangfireDashboard(config)
             .UseOpenApiDocumentation(config);
+    }
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
     {
@@ -101,6 +107,8 @@ public static class Startup
         return builder;
     }
 
-    private static IEndpointConventionBuilder MapHealthCheck(this IEndpointRouteBuilder endpoints) =>
-        endpoints.MapHealthChecks("/api/health");
+    private static IEndpointConventionBuilder MapHealthCheck(this IEndpointRouteBuilder endpoints)
+    {
+        return endpoints.MapHealthChecks("/api/health");
+    }
 }

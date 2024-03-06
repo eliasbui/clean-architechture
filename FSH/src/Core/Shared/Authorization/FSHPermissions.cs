@@ -48,14 +48,14 @@ public static class FSHPermissions
         new("Delete Roles", FSHAction.Delete, FSHResource.Roles),
         new("View RoleClaims", FSHAction.View, FSHResource.RoleClaims),
         new("Update RoleClaims", FSHAction.Update, FSHResource.RoleClaims),
-        new("View Products", FSHAction.View, FSHResource.Products, IsBasic: true),
-        new("Search Products", FSHAction.Search, FSHResource.Products, IsBasic: true),
+        new("View Products", FSHAction.View, FSHResource.Products, true),
+        new("Search Products", FSHAction.Search, FSHResource.Products, true),
         new("Create Products", FSHAction.Create, FSHResource.Products),
         new("Update Products", FSHAction.Update, FSHResource.Products),
         new("Delete Products", FSHAction.Delete, FSHResource.Products),
         new("Export Products", FSHAction.Export, FSHResource.Products),
-        new("View Brands", FSHAction.View, FSHResource.Brands, IsBasic: true),
-        new("Search Brands", FSHAction.Search, FSHResource.Brands, IsBasic: true),
+        new("View Brands", FSHAction.View, FSHResource.Brands, true),
+        new("Search Brands", FSHAction.Search, FSHResource.Brands, true),
         new("Create Brands", FSHAction.Create, FSHResource.Brands),
         new("Update Brands", FSHAction.Update, FSHResource.Brands),
         new("Delete Brands", FSHAction.Delete, FSHResource.Brands),
@@ -87,5 +87,9 @@ public record FSHPermission(
     bool IsRoot = false)
 {
     public string Name => NameFor(Action, Resource);
-    public static string NameFor(string action, string resource) => $"Permissions.{resource}.{action}";
+
+    public static string NameFor(string action, string resource)
+    {
+        return $"Permissions.{resource}.{action}";
+    }
 }

@@ -19,8 +19,10 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
     private readonly ILogger _logger;
     private readonly IConfiguration _config;
 
-    public AzureAdJwtBearerEvents(ILogger logger, IConfiguration config) =>
+    public AzureAdJwtBearerEvents(ILogger logger, IConfiguration config)
+    {
         (_logger, _config) = (logger, config);
+    }
 
     public override Task AuthenticationFailed(AuthenticationFailedContext context)
     {
@@ -100,18 +102,28 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
 
 internal static class AzureAdJwtBearerEventsLoggingExtensions
 {
-    public static void AuthenticationFailed(this ILogger logger, Exception e) =>
+    public static void AuthenticationFailed(this ILogger logger, Exception e)
+    {
         logger.Error("Authentication failed Exception: {e}", e);
+    }
 
-    public static void TokenReceived(this ILogger logger) =>
+    public static void TokenReceived(this ILogger logger)
+    {
         logger.Debug("Received a bearer token");
+    }
 
-    public static void TokenValidationStarted(this ILogger logger, string? userId, string? issuer) =>
+    public static void TokenValidationStarted(this ILogger logger, string? userId, string? issuer)
+    {
         logger.Debug("Token Validation Started for User: {userId} Issuer: {issuer}", userId, issuer);
+    }
 
-    public static void TokenValidationFailed(this ILogger logger, string? userId, string? issuer) =>
+    public static void TokenValidationFailed(this ILogger logger, string? userId, string? issuer)
+    {
         logger.Warning("Tenant is not registered User: {userId} Issuer: {issuer}", userId, issuer);
+    }
 
-    public static void TokenValidationSucceeded(this ILogger logger, string userId, string issuer) =>
+    public static void TokenValidationSucceeded(this ILogger logger, string userId, string issuer)
+    {
         logger.Debug("Token validation succeeded: User: {userId} Issuer: {issuer}", userId, issuer);
+    }
 }

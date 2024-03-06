@@ -37,13 +37,13 @@ internal static class Startup
                     doc.Info.Title = settings.Title;
                     doc.Info.Version = settings.Version;
                     doc.Info.Description = settings.Description;
-                    doc.Info.Contact = new()
+                    doc.Info.Contact = new OpenApiContact
                     {
                         Name = settings.ContactName,
                         Email = settings.ContactEmail,
                         Url = settings.ContactUrl
                     };
-                    doc.Info.License = new()
+                    doc.Info.License = new OpenApiLicense
                     {
                         Name = settings.LicenseName,
                         Url = settings.LicenseUrl
@@ -51,15 +51,14 @@ internal static class Startup
                 };
 
                 if (config["SecuritySettings:Provider"].Equals("AzureAd", StringComparison.OrdinalIgnoreCase))
-                {
                     document.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                     {
                         Type = OpenApiSecuritySchemeType.OAuth2,
                         Flow = OpenApiOAuth2Flow.AccessCode,
                         Description = "OAuth2.0 Auth Code with PKCE",
-                        Flows = new()
+                        Flows = new OpenApiOAuthFlows
                         {
-                            AuthorizationCode = new()
+                            AuthorizationCode = new OpenApiOAuthFlow
                             {
                                 AuthorizationUrl = config["SecuritySettings:Swagger:AuthorizationUrl"],
                                 TokenUrl = config["SecuritySettings:Swagger:TokenUrl"],
@@ -70,9 +69,7 @@ internal static class Startup
                             }
                         }
                     });
-                }
                 else
-                {
                     document.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                     {
                         Name = "Authorization",
@@ -80,9 +77,8 @@ internal static class Startup
                         In = OpenApiSecurityApiKeyLocation.Header,
                         Type = OpenApiSecuritySchemeType.Http,
                         Scheme = JwtBearerDefaults.AuthenticationScheme,
-                        BearerFormat = "JWT",
+                        BearerFormat = "JWT"
                     });
-                }
 
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor());
                 document.OperationProcessors.Add(new SwaggerGlobalAuthProcessor());

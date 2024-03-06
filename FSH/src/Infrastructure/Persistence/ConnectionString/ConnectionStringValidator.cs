@@ -22,10 +22,7 @@ internal class ConnectionStringValidator : IConnectionStringValidator
 
     public bool TryValidate(string connectionString, string? dbProvider = null)
     {
-        if (string.IsNullOrWhiteSpace(dbProvider))
-        {
-            dbProvider = _dbSettings.DBProvider;
-        }
+        if (string.IsNullOrWhiteSpace(dbProvider)) dbProvider = _dbSettings.DBProvider;
 
         try
         {

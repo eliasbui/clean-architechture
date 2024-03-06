@@ -6,44 +6,44 @@ internal static class Startup
     {
         const string configurationsDirectory = "Configurations";
         var env = builder.Environment;
-        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/logger.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/logger.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/hangfire.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/hangfire.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/cache.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/cache.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/cors.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/cors.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/database.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/database.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/mail.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/mail.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/middleware.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/middleware.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/security.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/security.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/openapi.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/openapi.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/signalr.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/signalr.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/securityheaders.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/securityheaders.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/localization.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"{configurationsDirectory}/localization.{env.EnvironmentName}.json", optional: true,
-                reloadOnChange: true)
+        builder.Configuration.AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+            .AddJsonFile($"{configurationsDirectory}/logger.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/logger.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/hangfire.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/hangfire.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/cache.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/cache.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/cors.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/cors.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/database.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/database.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/mail.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/mail.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/middleware.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/middleware.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/security.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/security.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/openapi.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/openapi.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/signalr.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/signalr.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/securityheaders.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/securityheaders.{env.EnvironmentName}.json", true,
+                true)
+            .AddJsonFile($"{configurationsDirectory}/localization.json", false, true)
+            .AddJsonFile($"{configurationsDirectory}/localization.{env.EnvironmentName}.json", true,
+                true)
             .AddEnvironmentVariables();
         return builder;
     }

@@ -29,6 +29,8 @@ internal static class Startup
                     .WithOrigins(origins.ToArray())));
     }
 
-    internal static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app) =>
-        app.UseCors(CorsPolicy);
+    internal static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
+    {
+        return app.UseCors(CorsPolicy);
+    }
 }

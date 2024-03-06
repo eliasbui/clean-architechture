@@ -6,7 +6,10 @@ public class ProductCreatedEventHandler : EventNotificationHandler<EntityCreated
 {
     private readonly ILogger<ProductCreatedEventHandler> _logger;
 
-    public ProductCreatedEventHandler(ILogger<ProductCreatedEventHandler> logger) => _logger = logger;
+    public ProductCreatedEventHandler(ILogger<ProductCreatedEventHandler> logger)
+    {
+        _logger = logger;
+    }
 
     public override Task Handle(EntityCreatedEvent<Product> @event, CancellationToken cancellationToken)
     {

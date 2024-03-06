@@ -7,7 +7,10 @@ public class CacheKeyService : ICacheKeyService
 {
     private readonly ITenantInfo? _currentTenant;
 
-    public CacheKeyService(ITenantInfo currentTenant) => _currentTenant = currentTenant;
+    public CacheKeyService(ITenantInfo currentTenant)
+    {
+        _currentTenant = currentTenant;
+    }
 
     public string GetCacheKey(string name, object id, bool includeTenantId = true)
     {

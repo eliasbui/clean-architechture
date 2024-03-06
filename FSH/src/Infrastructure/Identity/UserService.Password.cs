@@ -13,10 +13,8 @@ internal partial class UserService
 
         var user = await _userManager.FindByEmailAsync(request.Email.Normalize());
         if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
-        {
             // Don't reveal that the user does not exist or is not confirmed
             throw new InternalServerException(_t["An Error has occurred!"]);
-        }
 
         // For more information on how to enable account confirmation and password reset please
         // visit https://go.microsoft.com/fwlink/?LinkID=532713
@@ -56,9 +54,6 @@ internal partial class UserService
 
         var result = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
 
-        if (!result.Succeeded)
-        {
-            throw new InternalServerException(_t["Change password failed"], result.GetErrors(_t));
-        }
+        if (!result.Succeeded) throw new InternalServerException(_t["Change password failed"], result.GetErrors(_t));
     }
 }

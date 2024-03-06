@@ -6,7 +6,10 @@ public class DeleteBrandRequest : IRequest<Guid>
 {
     public Guid Id { get; set; }
 
-    public DeleteBrandRequest(Guid id) => Id = id;
+    public DeleteBrandRequest(Guid id)
+    {
+        Id = id;
+    }
 }
 
 public class DeleteBrandRequestHandler : IRequestHandler<DeleteBrandRequest, Guid>
@@ -17,15 +20,15 @@ public class DeleteBrandRequestHandler : IRequestHandler<DeleteBrandRequest, Gui
     private readonly IStringLocalizer _t;
 
     public DeleteBrandRequestHandler(IRepositoryWithEvents<Brand> brandRepo, IReadRepository<Product> productRepo,
-        IStringLocalizer<DeleteBrandRequestHandler> localizer) =>
+        IStringLocalizer<DeleteBrandRequestHandler> localizer)
+    {
         (_brandRepo, _productRepo, _t) = (brandRepo, productRepo, localizer);
+    }
 
     public async Task<Guid> Handle(DeleteBrandRequest request, CancellationToken cancellationToken)
     {
         if (await _productRepo.AnyAsync(new ProductsByBrandSpec(request.Id), cancellationToken))
-        {
             throw new ConflictException(_t["Brand cannot be deleted as it's being used."]);
-        }
 
         var brand = await _brandRepo.GetByIdAsync(request.Id, cancellationToken);
 

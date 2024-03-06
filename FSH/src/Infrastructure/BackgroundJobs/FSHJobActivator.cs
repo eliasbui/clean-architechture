@@ -13,11 +13,15 @@ public class FSHJobActivator : JobActivator
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
-    public FSHJobActivator(IServiceScopeFactory scopeFactory) =>
+    public FSHJobActivator(IServiceScopeFactory scopeFactory)
+    {
         _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
+    }
 
-    public override JobActivatorScope BeginScope(PerformContext context) =>
-        new Scope(context, _scopeFactory.CreateScope());
+    public override JobActivatorScope BeginScope(PerformContext context)
+    {
+        return new Scope(context, _scopeFactory.CreateScope());
+    }
 
     private class Scope : JobActivatorScope, IServiceProvider
     {
@@ -36,28 +40,28 @@ public class FSHJobActivator : JobActivator
         {
             var tenantInfo = _context.GetJobParameter<FSHTenantInfo>(MultitenancyConstants.TenantIdName);
             if (tenantInfo is not null)
-            {
                 _scope.ServiceProvider.GetRequiredService<IMultiTenantContextAccessor>()
                     .MultiTenantContext = new MultiTenantContext<FSHTenantInfo>
                 {
                     TenantInfo = tenantInfo
                 };
-            }
 
             string userId = _context.GetJobParameter<string>(QueryStringKeys.UserId);
             if (!string.IsNullOrEmpty(userId))
-            {
                 _scope.ServiceProvider.GetRequiredService<ICurrentUserInitializer>()
                     .SetCurrentUserId(userId);
-            }
         }
 
-        public override object Resolve(Type type) =>
-            ActivatorUtilities.GetServiceOrCreateInstance(this, type);
+        public override object Resolve(Type type)
+        {
+            return ActivatorUtilities.GetServiceOrCreateInstance(this, type);
+        }
 
-        object? IServiceProvider.GetService(Type serviceType) =>
-            serviceType == typeof(PerformContext)
+        object? IServiceProvider.GetService(Type serviceType)
+        {
+            return serviceType == typeof(PerformContext)
                 ? _context
                 : _scope.ServiceProvider.GetService(serviceType);
+        }
     }
 }

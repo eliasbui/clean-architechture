@@ -7,7 +7,10 @@ public class UsersController : VersionNeutralApiController
 {
     private readonly IUserService _userService;
 
-    public UsersController(IUserService userService) => _userService = userService;
+    public UsersController(IUserService userService)
+    {
+        _userService = userService;
+    }
 
     [HttpGet]
     [MustHavePermission(FSHAction.View, FSHResource.Users)]
@@ -73,10 +76,7 @@ public class UsersController : VersionNeutralApiController
     public async Task<ActionResult> ToggleStatusAsync(string id, ToggleUserStatusRequest request,
         CancellationToken cancellationToken)
     {
-        if (id != request.UserId)
-        {
-            return BadRequest();
-        }
+        if (id != request.UserId) return BadRequest();
 
         await _userService.ToggleStatusAsync(request, cancellationToken);
         return Ok();
@@ -119,5 +119,8 @@ public class UsersController : VersionNeutralApiController
         return _userService.ResetPasswordAsync(request);
     }
 
-    private string GetOriginFromRequest() => $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
+    private string GetOriginFromRequest()
+    {
+        return $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
+    }
 }

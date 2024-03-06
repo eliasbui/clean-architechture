@@ -6,8 +6,9 @@ namespace FSH.Infrastructure.Identity;
 
 internal static class Startup
 {
-    internal static IServiceCollection AddIdentity(this IServiceCollection services) =>
-        services
+    internal static IServiceCollection AddIdentity(this IServiceCollection services)
+    {
+        return services
             .AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -20,4 +21,5 @@ internal static class Startup
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .Services;
+    }
 }

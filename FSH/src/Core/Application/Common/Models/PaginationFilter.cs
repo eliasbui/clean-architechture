@@ -11,6 +11,8 @@ public class PaginationFilter : BaseFilter
 
 public static class PaginationFilterExtensions
 {
-    public static bool HasOrderBy(this PaginationFilter filter) =>
-        filter.OrderBy?.Any() is true;
+    public static bool HasOrderBy(this PaginationFilter filter)
+    {
+        return filter.OrderBy?.Any() is true;
+    }
 }

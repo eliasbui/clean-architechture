@@ -13,7 +13,10 @@ public abstract class CacheServiceTests
 
     private readonly ICacheService _sut;
 
-    protected CacheServiceTests(ICacheService cacheService) => _sut = cacheService;
+    protected CacheServiceTests(ICacheService cacheService)
+    {
+        _sut = cacheService;
+    }
 
     [Fact]
     public void ThrowsGivenNullKey()
@@ -43,7 +46,7 @@ public abstract class CacheServiceTests
         new object[] { "long", 1L },
         new object[] { "double", 1.0 },
         new object[] { "bool", true },
-        new object[] { "date", new DateTime(2022, 1, 1) },
+        new object[] { "date", new DateTime(2022, 1, 1) }
     };
 
     [Theory]
@@ -51,7 +54,7 @@ public abstract class CacheServiceTests
     public void ReturnsExistingValueGivenExistingKey<T>(string testKey, T testValue)
     {
         _sut.Set(testKey, testValue);
-        T? result = _sut.Get<T>(testKey);
+        var result = _sut.Get<T>(testKey);
 
         result.Should().Be(testValue);
     }

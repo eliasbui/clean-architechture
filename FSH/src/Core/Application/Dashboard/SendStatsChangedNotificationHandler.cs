@@ -17,36 +17,52 @@ public class SendStatsChangedNotificationHandler :
     private readonly INotificationSender _notifications;
 
     public SendStatsChangedNotificationHandler(ILogger<SendStatsChangedNotificationHandler> logger,
-        INotificationSender notifications) =>
+        INotificationSender notifications)
+    {
         (_logger, _notifications) = (logger, notifications);
+    }
 
     public Task Handle(EventNotification<EntityCreatedEvent<Brand>> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<EntityDeletedEvent<Brand>> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<EntityCreatedEvent<Product>> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<EntityDeletedEvent<Product>> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<ApplicationRoleCreatedEvent> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<ApplicationRoleDeletedEvent> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     public Task Handle(EventNotification<ApplicationUserCreatedEvent> notification,
-        CancellationToken cancellationToken) =>
-        SendStatsChangedNotification(notification.Event, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        return SendStatsChangedNotification(notification.Event, cancellationToken);
+    }
 
     private Task SendStatsChangedNotification(IEvent @event, CancellationToken cancellationToken)
     {

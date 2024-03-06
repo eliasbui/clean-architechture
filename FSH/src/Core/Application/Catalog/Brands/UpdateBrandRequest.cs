@@ -10,7 +10,8 @@ public class UpdateBrandRequest : IRequest<Guid>
 public class UpdateBrandRequestValidator : CustomValidator<UpdateBrandRequest>
 {
     public UpdateBrandRequestValidator(IRepository<Brand> repository,
-        IStringLocalizer<UpdateBrandRequestValidator> T) =>
+        IStringLocalizer<UpdateBrandRequestValidator> T)
+    {
         RuleFor(p => p.Name)
             .NotEmpty()
             .MaximumLength(75)
@@ -18,6 +19,7 @@ public class UpdateBrandRequestValidator : CustomValidator<UpdateBrandRequest>
                 await repository.FirstOrDefaultAsync(new BrandByNameSpec(name), ct)
                     is not Brand existingBrand || existingBrand.Id == brand.Id)
             .WithMessage((_, name) => T["Brand {0} already Exists.", name]);
+    }
 }
 
 public class UpdateBrandRequestHandler : IRequestHandler<UpdateBrandRequest, Guid>
@@ -27,8 +29,10 @@ public class UpdateBrandRequestHandler : IRequestHandler<UpdateBrandRequest, Gui
     private readonly IStringLocalizer _t;
 
     public UpdateBrandRequestHandler(IRepositoryWithEvents<Brand> repository,
-        IStringLocalizer<UpdateBrandRequestHandler> localizer) =>
+        IStringLocalizer<UpdateBrandRequestHandler> localizer)
+    {
         (_repository, _t) = (repository, localizer);
+    }
 
     public async Task<Guid> Handle(UpdateBrandRequest request, CancellationToken cancellationToken)
     {

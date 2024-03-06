@@ -6,8 +6,10 @@ public class CurrentUserMiddleware : IMiddleware
 {
     private readonly ICurrentUserInitializer _currentUserInitializer;
 
-    public CurrentUserMiddleware(ICurrentUserInitializer currentUserInitializer) =>
+    public CurrentUserMiddleware(ICurrentUserInitializer currentUserInitializer)
+    {
         _currentUserInitializer = currentUserInitializer;
+    }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

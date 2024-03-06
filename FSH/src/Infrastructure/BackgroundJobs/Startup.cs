@@ -44,8 +44,9 @@ internal static class Startup
     }
 
     private static IGlobalConfiguration UseDatabase(this IGlobalConfiguration hangfireConfig, string dbProvider,
-        string connectionString, IConfiguration config) =>
-        dbProvider.ToLowerInvariant() switch
+        string connectionString, IConfiguration config)
+    {
+        return dbProvider.ToLowerInvariant() switch
         {
             DbProviderKeys.Npgsql =>
                 hangfireConfig.UsePostgreSqlStorage(connectionString,
@@ -61,6 +62,7 @@ internal static class Startup
                     config.GetSection("HangfireSettings:Storage:Options").Get<MySqlStorageOptions>())),
             _ => throw new Exception($"Hangfire Storage Provider {dbProvider} is not supported.")
         };
+    }
 
     internal static IApplicationBuilder UseHangfireDashboard(this IApplicationBuilder app, IConfiguration config)
     {

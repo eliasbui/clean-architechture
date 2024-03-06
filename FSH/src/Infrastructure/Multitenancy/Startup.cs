@@ -31,20 +31,21 @@ internal static class Startup
             .AddScoped<ITenantService, TenantService>();
     }
 
-    internal static IApplicationBuilder UseMultiTenancy(this IApplicationBuilder app) =>
-        app.UseMultiTenant();
+    internal static IApplicationBuilder UseMultiTenancy(this IApplicationBuilder app)
+    {
+        return app.UseMultiTenant();
+    }
 
     private static FinbuckleMultiTenantBuilder<FSHTenantInfo> WithQueryStringStrategy(
-        this FinbuckleMultiTenantBuilder<FSHTenantInfo> builder, string queryStringKey) =>
-        builder.WithDelegateStrategy(context =>
+        this FinbuckleMultiTenantBuilder<FSHTenantInfo> builder, string queryStringKey)
+    {
+        return builder.WithDelegateStrategy(context =>
         {
-            if (context is not HttpContext httpContext)
-            {
-                return Task.FromResult((string?)null);
-            }
+            if (context is not HttpContext httpContext) return Task.FromResult((string?)null);
 
-            httpContext.Request.Query.TryGetValue(queryStringKey, out StringValues tenantIdParam);
+            httpContext.Request.Query.TryGetValue(queryStringKey, out var tenantIdParam);
 
             return Task.FromResult((string?)tenantIdParam.ToString());
         });
+    }
 }

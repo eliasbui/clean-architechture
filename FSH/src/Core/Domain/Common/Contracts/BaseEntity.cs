@@ -5,7 +5,10 @@ namespace FSH.Domain.Common.Contracts;
 
 public abstract class BaseEntity : BaseEntity<DefaultIdType>
 {
-    protected BaseEntity() => Id = NewId.Next().ToGuid();
+    protected BaseEntity()
+    {
+        Id = NewId.Next().ToGuid();
+    }
 }
 
 public abstract class BaseEntity<TId> : IEntity<TId>

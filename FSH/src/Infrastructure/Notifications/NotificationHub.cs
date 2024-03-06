@@ -21,10 +21,7 @@ public class NotificationHub : Hub, ITransientService
 
     public override async Task OnConnectedAsync()
     {
-        if (_currentTenant is null)
-        {
-            throw new UnauthorizedException("Authentication Failed.");
-        }
+        if (_currentTenant is null) throw new UnauthorizedException("Authentication Failed.");
 
         await Groups.AddToGroupAsync(Context.ConnectionId, $"GroupTenant-{_currentTenant.Id}");
 

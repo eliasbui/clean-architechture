@@ -72,7 +72,7 @@ public class BrandGeneratorJob : IBrandGeneratorJob
                 },
                 cancellationToken);
 
-            await NotifyAsync("Progress: ", nSeed > 0 ? (index * 100 / nSeed) : 0, cancellationToken);
+            await NotifyAsync("Progress: ", nSeed > 0 ? index * 100 / nSeed : 0, cancellationToken);
         }
 
         await NotifyAsync("Job successfully completed", 0, cancellationToken);
@@ -88,10 +88,7 @@ public class BrandGeneratorJob : IBrandGeneratorJob
 
         _logger.LogInformation("Brands Random: {brandsCount} ", items.Count.ToString());
 
-        foreach (var item in items)
-        {
-            await _mediator.Send(new DeleteBrandRequest(item.Id), cancellationToken);
-        }
+        foreach (var item in items) await _mediator.Send(new DeleteBrandRequest(item.Id), cancellationToken);
 
         _logger.LogInformation("All random brands deleted.");
     }
@@ -99,6 +96,8 @@ public class BrandGeneratorJob : IBrandGeneratorJob
 
 public class RandomBrandsSpec : Specification<Brand>
 {
-    public RandomBrandsSpec() =>
+    public RandomBrandsSpec()
+    {
         Query.Where(b => !string.IsNullOrEmpty(b.Name) && b.Name.Contains("Brand Random"));
+    }
 }

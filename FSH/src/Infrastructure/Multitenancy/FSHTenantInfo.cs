@@ -45,30 +45,28 @@ public class FSHTenantInfo : ITenantInfo
     /// </summary>
     public string? Issuer { get; set; }
 
-    public void AddValidity(int months) =>
+    public void AddValidity(int months)
+    {
         ValidUpto = ValidUpto.AddMonths(months);
+    }
 
-    public void SetValidity(in DateTime validTill) =>
+    public void SetValidity(in DateTime validTill)
+    {
         ValidUpto = ValidUpto < validTill
             ? validTill
             : throw new Exception("Subscription cannot be backdated.");
+    }
 
     public void Activate()
     {
-        if (Id == MultitenancyConstants.Root.Id)
-        {
-            throw new InvalidOperationException("Invalid Tenant");
-        }
+        if (Id == MultitenancyConstants.Root.Id) throw new InvalidOperationException("Invalid Tenant");
 
         IsActive = true;
     }
 
     public void Deactivate()
     {
-        if (Id == MultitenancyConstants.Root.Id)
-        {
-            throw new InvalidOperationException("Invalid Tenant");
-        }
+        if (Id == MultitenancyConstants.Root.Id) throw new InvalidOperationException("Invalid Tenant");
 
         IsActive = false;
     }

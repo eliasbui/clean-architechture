@@ -8,7 +8,10 @@ public class DeleteRandomBrandRequestHandler : IRequestHandler<DeleteRandomBrand
 {
     private readonly IJobService _jobService;
 
-    public DeleteRandomBrandRequestHandler(IJobService jobService) => _jobService = jobService;
+    public DeleteRandomBrandRequestHandler(IJobService jobService)
+    {
+        _jobService = jobService;
+    }
 
     public Task<string> Handle(DeleteRandomBrandRequest request, CancellationToken cancellationToken)
     {

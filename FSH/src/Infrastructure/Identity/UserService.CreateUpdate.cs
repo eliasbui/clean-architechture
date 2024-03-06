@@ -23,10 +23,7 @@ internal partial class UserService
     public async Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal)
     {
         string? objectId = principal.GetObjectId();
-        if (string.IsNullOrWhiteSpace(objectId))
-        {
-            throw new InternalServerException(_t["Invalid objectId"]);
-        }
+        if (string.IsNullOrWhiteSpace(objectId)) throw new InternalServerException(_t["Invalid objectId"]);
 
         var user = await _userManager.Users.Where(u => u.ObjectId == objectId).FirstOrDefaultAsync()
                    ?? await CreateOrUpdateFromPrincipalAsync(principal);
@@ -34,9 +31,7 @@ internal partial class UserService
         if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
             await _roleManager.RoleExistsAsync(role) &&
             !await _userManager.IsInRoleAsync(user, role))
-        {
             await _userManager.AddToRoleAsync(user, role);
-        }
 
         return user.Id;
     }
@@ -46,23 +41,17 @@ internal partial class UserService
         string? email = principal.FindFirstValue(ClaimTypes.Upn);
         string? username = principal.GetDisplayName();
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(username))
-        {
             throw new InternalServerException(string.Format(_t["Username or Email not valid."]));
-        }
 
         var user = await _userManager.FindByNameAsync(username);
         if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
-        {
             throw new InternalServerException(string.Format(_t["Username {0} is already taken."], username));
-        }
 
         if (user is null)
         {
             user = await _userManager.FindByEmailAsync(email);
             if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
-            {
                 throw new InternalServerException(string.Format(_t["Email {0} is already taken."], email));
-            }
         }
 
         IdentityResult? result;
@@ -94,9 +83,7 @@ internal partial class UserService
         }
 
         if (!result.Succeeded)
-        {
             throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
-        }
 
         return user;
     }
@@ -115,9 +102,7 @@ internal partial class UserService
 
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
-        {
             throw new InternalServerException(_t["Validation Errors Occurred."], result.GetErrors(_t));
-        }
 
         await _userManager.AddToRoleAsync(user, FSHRoles.Basic);
 
@@ -127,7 +112,7 @@ internal partial class UserService
         {
             // send verification email
             string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-            RegisterUserEmailModel eMailModel = new RegisterUserEmailModel()
+            var eMailModel = new RegisterUserEmailModel()
             {
                 Email = user.Email,
                 UserName = user.UserName,
@@ -167,10 +152,7 @@ internal partial class UserService
         user.LastName = request.LastName;
         user.PhoneNumber = request.PhoneNumber;
         string? phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-        if (request.PhoneNumber != phoneNumber)
-        {
-            await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
-        }
+        if (request.PhoneNumber != phoneNumber) await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
 
         var result = await _userManager.UpdateAsync(user);
 
@@ -178,9 +160,6 @@ internal partial class UserService
 
         await _events.PublishAsync(new ApplicationUserUpdatedEvent(user.Id));
 
-        if (!result.Succeeded)
-        {
-            throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
-        }
+        if (!result.Succeeded) throw new InternalServerException(_t["Update profile failed"], result.GetErrors(_t));
     }
 }

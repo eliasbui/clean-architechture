@@ -24,8 +24,9 @@ public class AuditTrail
     public List<string> ChangedColumns { get; } = new();
     public bool HasTemporaryProperties => TemporaryProperties.Count > 0;
 
-    public Trail ToAuditTrail() =>
-        new()
+    public Trail ToAuditTrail()
+    {
+        return new Trail
         {
             UserId = UserId,
             Type = TrailType.ToString(),
@@ -36,4 +37,5 @@ public class AuditTrail
             NewValues = NewValues.Count == 0 ? null : _serializer.Serialize(NewValues),
             AffectedColumns = ChangedColumns.Count == 0 ? null : _serializer.Serialize(ChangedColumns)
         };
+    }
 }

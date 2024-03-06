@@ -6,11 +6,15 @@ namespace FSH.Infrastructure.Middleware;
 
 internal static class Startup
 {
-    internal static IServiceCollection AddExceptionMiddleware(this IServiceCollection services) =>
-        services.AddScoped<ExceptionMiddleware>();
+    internal static IServiceCollection AddExceptionMiddleware(this IServiceCollection services)
+    {
+        return services.AddScoped<ExceptionMiddleware>();
+    }
 
-    internal static IApplicationBuilder UseExceptionMiddleware(this IApplicationBuilder app) =>
-        app.UseMiddleware<ExceptionMiddleware>();
+    internal static IApplicationBuilder UseExceptionMiddleware(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<ExceptionMiddleware>();
+    }
 
     internal static IServiceCollection AddRequestLogging(this IServiceCollection services, IConfiguration config)
     {
@@ -34,6 +38,8 @@ internal static class Startup
         return app;
     }
 
-    private static MiddlewareSettings GetMiddlewareSettings(IConfiguration config) =>
-        config.GetSection(nameof(MiddlewareSettings)).Get<MiddlewareSettings>()!;
+    private static MiddlewareSettings GetMiddlewareSettings(IConfiguration config)
+    {
+        return config.GetSection(nameof(MiddlewareSettings)).Get<MiddlewareSettings>()!;
+    }
 }

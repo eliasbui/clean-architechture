@@ -6,7 +6,10 @@ public class DeleteProductRequest : IRequest<Guid>
 {
     public Guid Id { get; set; }
 
-    public DeleteProductRequest(Guid id) => Id = id;
+    public DeleteProductRequest(Guid id)
+    {
+        Id = id;
+    }
 }
 
 public class DeleteProductRequestHandler : IRequestHandler<DeleteProductRequest, Guid>
@@ -15,8 +18,10 @@ public class DeleteProductRequestHandler : IRequestHandler<DeleteProductRequest,
     private readonly IStringLocalizer _t;
 
     public DeleteProductRequestHandler(IRepository<Product> repository,
-        IStringLocalizer<DeleteProductRequestHandler> localizer) =>
+        IStringLocalizer<DeleteProductRequestHandler> localizer)
+    {
         (_repository, _t) = (repository, localizer);
+    }
 
     public async Task<Guid> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
     {

@@ -9,36 +9,36 @@ public partial class InitialMigrations : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.EnsureSchema(
-            name: "MultiTenancy");
+            "MultiTenancy");
 
         migrationBuilder.AlterDatabase()
             .Annotation("MySql:CharSet", "utf8mb4");
 
         migrationBuilder.CreateTable(
-                name: "Tenants",
+                "Tenants",
                 schema: "MultiTenancy",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
+                    Id = table.Column<string>("varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identifier = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Identifier = table.Column<string>("varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConnectionString = table.Column<string>(type: "longtext", nullable: false)
+                    ConnectionString = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AdminEmail = table.Column<string>(type: "longtext", nullable: false)
+                    AdminEmail = table.Column<string>("longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ValidUpto = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Issuer = table.Column<string>(type: "longtext", nullable: true)
+                    IsActive = table.Column<bool>("tinyint(1)", nullable: false),
+                    ValidUpto = table.Column<DateTime>("datetime(6)", nullable: false),
+                    Issuer = table.Column<string>("longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table => { table.PrimaryKey("PK_Tenants", x => x.Id); })
             .Annotation("MySql:CharSet", "utf8mb4");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Tenants_Identifier",
+            "IX_Tenants_Identifier",
             schema: "MultiTenancy",
             table: "Tenants",
             column: "Identifier",
@@ -48,7 +48,7 @@ public partial class InitialMigrations : Migration
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(
-            name: "Tenants",
-            schema: "MultiTenancy");
+            "Tenants",
+            "MultiTenancy");
     }
 }

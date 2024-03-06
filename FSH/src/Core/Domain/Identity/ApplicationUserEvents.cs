@@ -4,7 +4,10 @@ public abstract class ApplicationUserEvent : DomainEvent
 {
     public string UserId { get; set; } = default!;
 
-    protected ApplicationUserEvent(string userId) => UserId = userId;
+    protected ApplicationUserEvent(string userId)
+    {
+        UserId = userId;
+    }
 }
 
 public class ApplicationUserCreatedEvent : ApplicationUserEvent
@@ -20,6 +23,8 @@ public class ApplicationUserUpdatedEvent : ApplicationUserEvent
     public bool RolesUpdated { get; set; }
 
     public ApplicationUserUpdatedEvent(string userId, bool rolesUpdated = false)
-        : base(userId) =>
+        : base(userId)
+    {
         RolesUpdated = rolesUpdated;
+    }
 }
